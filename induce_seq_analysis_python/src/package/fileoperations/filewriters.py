@@ -7,6 +7,8 @@ __name__ = "__main__"
 import logging
 import os
 
+import vaex as vaex
+
 from package.enumsoperations.delimiter_enums import Delimiters
 
 
@@ -50,3 +52,16 @@ class FileWriter:
             file.write(data)
 
         logging.info("writing data to {}".format(self.file_path))
+
+    def write_df(self, data: vaex.dataframe, delimiter: str, header: bool) -> None:
+        """
+        Writes data to a file. Data here is a DataFrame. To show progress bar add progress=True to data.export()
+
+        :param data: DataFrame to write.
+        :param delimiter: Delimiter to use.
+        :param header: Write header or not.
+        """
+
+        data.to_csv(self.file_path, sep=delimiter, header=header, index=False)
+
+        logging.info(" writing dataframe to file: {}".format(self.file_path))

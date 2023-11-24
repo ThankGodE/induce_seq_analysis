@@ -44,13 +44,20 @@ class BreaksOperator:
     def process_breaks(self) -> None:
         """ process breaks bed file """
 
-        filtered_reads: object() = BreaksOperator.__filter_reads_from_breaks_file(self)
         path_to_filtered_file: str = os.path.join(self.output_directory, "filtered_reads.bed")
+        path_to_normalised_number_asisi_breaks_file: str = os.path.join(self.output_directory,
+                                                                        "normalised_number_asisi_breaks.bed")
 
+        filtered_reads: object() = BreaksOperator.__filter_reads_from_breaks_file(self)
         file_writer: FileWriter = FileWriter(path_to_filtered_file, "w")
         file_writer.write_filtered_reads(filtered_reads)
 
-        intersect: pd.DataFrame = BreaksOperator.__intersect_breaks_with_asisi(self, path_to_filtered_file)
+        breaks_file_asisi_sites_intersect_df: pd.DataFrame = (
+            BreaksOperator.__intersect_breaks_with_asisi(self, path_to_filtered_file))
+        normalised_asisi_sum_df: pd.DataFrame = BreaksOperator.__sum_normalise_counts_asisi_breaks(
+            self, breaks_file_asisi_sites_intersect_df)
+        file_writer_normalised_sum: FileWriter = FileWriter(path_to_normalised_number_asisi_breaks_file, "w")
+        file_writer_normalised_sum.write_df(normalised_asisi_sum_df, Delimiters.TAB_SEPERATOR, True)
 
     def __intersect_breaks_with_asisi(self, breaks_bed_file: str) -> pd.DataFrame:
         """ intersect breaks bed file with asisi bed file """
@@ -73,27 +80,26 @@ class BreaksOperator:
                 Words.BreaksAsisiColumNames.ASISI_SUFFIX, Words.BreaksAsisiColumNames.BREAKS_SUFFIX))
 
         asisi_breaks_merged_df = asisi_breaks_merged_df[
-            asisi_breaks_merged_df["start_asisi"].astype(int) <= asisi_breaks_merged_df["start_breaks"].astype(int)]
+            asisi_breaks_merged_df[Words.BreaksAsisiColumNames.START_ASISI].astype(int) <= asisi_breaks_merged_df[
+                Words.BreaksAsisiColumNames.START_BREAKS].astype(int)]
 
-        asisi_breaks_merged_df = asisi_breaks_merged_df[asisi_breaks_merged_df["end_asisi"].astype(int) >=
-                                                        asisi_breaks_merged_df["end_breaks"].astype(int)]
+        asisi_breaks_merged_df = asisi_breaks_merged_df[
+            asisi_breaks_merged_df[Words.BreaksAsisiColumNames.END_ASISI].astype(int) >= asisi_breaks_merged_df[
+                Words.BreaksAsisiColumNames.END_BREAKS].astype(int)]
 
-        sum_asisi_breaks = len(list(asisi_breaks_merged_df["start_breaks"]))
+        return asisi_breaks_merged_df
+
+    def __sum_normalise_counts_asisi_breaks(self, asisi_breaks_df: pd.DataFrame) -> pd.DataFrame:
+        """ Sum and normalise the number of asisi breaks to the total number of breaks. """
+
+        sum_asisi_breaks = len(list(asisi_breaks_df["start_breaks"]))
         total_non_filtered_breaks = len(read_csv(self.breaks_file, Delimiters.TAB_SEPERATOR))
         normalised_number_asisi_breaks = sum_asisi_breaks / (total_non_filtered_breaks / 1000)
 
-        print(sum_asisi_breaks)
-        print(total_non_filtered_breaks)
-        print(normalised_number_asisi_breaks)
-
-        pd.set_option('display.max_colwidth', None)
-        pd.set_option('display.max_columns', None)
-        pd.get_option("display.max_rows", None)
-        pd.set_option('display.width', None)
-
-        print(asisi_breaks_merged_df.head(10), "OOOO")
-
-        sys.exit()
+        return pd.DataFrame(
+            {Words.BreaksAsisiColumNames.NUMBER_NON_FILTERED_BREAKS: [total_non_filtered_breaks],
+             Words.BreaksAsisiColumNames.NUMBER_ASISI_BREAKS: [sum_asisi_breaks],
+             Words.BreaksAsisiColumNames.NORMALISED_NUMBER_ASISI_BREAKS: [normalised_number_asisi_breaks]})
 
     def __filter_reads_from_breaks_file(self) -> object():
         """ filter reads from a breaks bed file """
