@@ -5,10 +5,16 @@ A collection of functions that performs file writing operations.
 __name__ = "__main__"
 
 import logging
+import os
+
+from package.enumsoperations.delimiter_enums import Delimiters
 
 
 class FileWriter:
     """ The FileWriter class handles the writing of the data to a file. """
+
+    file_path: str = None
+    mode: str = None
 
     def __init__(self, file_path, mode):
         """
@@ -19,6 +25,19 @@ class FileWriter:
         """
         self.file_path = file_path
         self.mode = mode
+
+    def write_filtered_reads(self, filtered_reads: object()):
+        """ Write filtered out reads containing generator object to file """
+
+        with open(self.file_path, self.mode) as filtered_out_content:
+
+            for filtered_read in filtered_reads:
+
+                filtered_read_bed = Delimiters.TAB_SEPERATOR.join(filtered_read)
+
+                filtered_out_content.write(filtered_read_bed + Delimiters.NEW_LINER)
+
+        logging.info("Filtered reads written to file:  {}".format(self.file_path))
 
     def write_str(self, data: str) -> None:
         """

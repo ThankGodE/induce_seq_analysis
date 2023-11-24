@@ -1,13 +1,14 @@
 """
 A collection of classes or functions that performs breaks processing operations
 """
-
+import logging
 import os.path
-import sys
+import pandas as pd
 
 from package.enumsoperations.delimiter_enums import Delimiters
 from package.enumsoperations.numerical_enums import Positions
 from package.fileoperations.filehandlers import read_csv
+from package.fileoperations.filewriters import FileWriter
 
 
 class BreaksOperator:
@@ -18,13 +19,13 @@ class BreaksOperator:
     output_directory = None
     score_threshold = None
 
-    def __init__(self, breaks_file: list, asisi_file: str, output_directory: str, score_threshold: int) -> None:
+    def __init__(self, breaks_file: str, asisi_file: str, output_directory: str, score_threshold: int) -> None:
         """
         Constructor
 
         Parameters
         ----------
-        breaks_file :list
+        breaks_file :str
            Path to breaks file
         asisi_file:str
            Path to asisi file
@@ -40,17 +41,29 @@ class BreaksOperator:
     def process_breaks(self) -> None:
         """ process breaks bed file """
 
-        a = BreaksOperator.__filter_reads_from_breaks_file(self)
+        filtered_reads: object() = BreaksOperator.__filter_reads_from_breaks_file(self)
+        path_to_filtered_file: str = os.path.join(self.output_directory, "filtered_reads.bed")
 
-    def __filter_reads_from_breaks_file(self) -> str:
+        file_writer: FileWriter = FileWriter(path_to_filtered_file, "w")
+        file_writer.write_filtered_reads(filtered_reads)
+
+        intersect: pd.DataFrame = BreaksOperator.__intersect_breaks_with_asisi(self, path_to_filtered_file)
+
+    def __intersect_breaks_with_asisi(self, breaks_bed_file: str) -> pd.DataFrame:
+        """ intersect breaks bed file with asisi bed file """
+
+
+
+
+
+        
+
+    def __filter_reads_from_breaks_file(self) -> object():
         """ filter reads from a breaks bed file """
 
-        a = [row for row in
-             read_csv(self.breaks_file, Delimiters.TAB_SEPERATOR) if BreaksOperator.__filter_read_from_breaks_row(
-                row, self.score_threshold)
-             ]
-
-        print(a)
+        for row in read_csv(self.breaks_file, Delimiters.TAB_SEPERATOR):
+            if BreaksOperator.__filter_read_from_breaks_row(row, self.score_threshold):
+                yield row
 
     @classmethod
     def __filter_read_from_breaks_row(cls, line: str, threshold: int) -> bool:
