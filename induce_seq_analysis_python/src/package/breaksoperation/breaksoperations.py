@@ -3,8 +3,11 @@ A collection of classes or functions that performs breaks processing operations
 """
 import logging
 import os.path
+import sys
+
 import pandas as pd
 
+from package.enumsoperations.character_enums import Words
 from package.enumsoperations.delimiter_enums import Delimiters
 from package.enumsoperations.numerical_enums import Positions
 from package.fileoperations.filehandlers import read_csv
@@ -52,11 +55,45 @@ class BreaksOperator:
     def __intersect_breaks_with_asisi(self, breaks_bed_file: str) -> pd.DataFrame:
         """ intersect breaks bed file with asisi bed file """
 
+        breaks_file_content_df: pd.DataFrame = pd.read_csv(breaks_bed_file, sep=Delimiters.TAB_SEPERATOR, header=None,
+                                                           names=[Words.BreaksAsisiColumNames.CHROMOSOME,
+                                                                  Words.BreaksAsisiColumNames.START,
+                                                                  Words.BreaksAsisiColumNames.END,
+                                                                  Words.BreaksAsisiColumNames.BED_LINE_NAME,
+                                                                  Words.BreaksAsisiColumNames.SCORE,
+                                                                  Words.BreaksAsisiColumNames.STRAND])
 
+        asisi_file_content_df: pd.DataFrame = pd.read_csv(self.asisi_file, sep=Delimiters.TAB_SEPERATOR, header=None,
+                                                          names=[Words.BreaksAsisiColumNames.CHROMOSOME,
+                                                                 Words.BreaksAsisiColumNames.START,
+                                                                 Words.BreaksAsisiColumNames.END])
 
+        asisi_breaks_merged_df = pd.merge(asisi_file_content_df, breaks_file_content_df,
+                                          on=Words.BreaksAsisiColumNames.CHROMOSOME, suffixes=(
+                Words.BreaksAsisiColumNames.ASISI_SUFFIX, Words.BreaksAsisiColumNames.BREAKS_SUFFIX))
 
+        asisi_breaks_merged_df = asisi_breaks_merged_df[
+            asisi_breaks_merged_df["start_asisi"].astype(int) <= asisi_breaks_merged_df["start_breaks"].astype(int)]
 
-        
+        asisi_breaks_merged_df = asisi_breaks_merged_df[asisi_breaks_merged_df["end_asisi"].astype(int) >=
+                                                        asisi_breaks_merged_df["end_breaks"].astype(int)]
+
+        sum_asisi_breaks = len(list(asisi_breaks_merged_df["start_breaks"]))
+        total_non_filtered_breaks = len(read_csv(self.breaks_file, Delimiters.TAB_SEPERATOR))
+        normalised_number_asisi_breaks = sum_asisi_breaks / (total_non_filtered_breaks / 1000)
+
+        print(sum_asisi_breaks)
+        print(total_non_filtered_breaks)
+        print(normalised_number_asisi_breaks)
+
+        pd.set_option('display.max_colwidth', None)
+        pd.set_option('display.max_columns', None)
+        pd.get_option("display.max_rows", None)
+        pd.set_option('display.width', None)
+
+        print(asisi_breaks_merged_df.head(10), "OOOO")
+
+        sys.exit()
 
     def __filter_reads_from_breaks_file(self) -> object():
         """ filter reads from a breaks bed file """
