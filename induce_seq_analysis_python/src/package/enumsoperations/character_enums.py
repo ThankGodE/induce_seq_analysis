@@ -24,3 +24,4 @@ class Words:
         NUMBER_NON_FILTERED_BREAKS = "number_non_filtered_breaks"
         NUMBER_ASISI_BREAKS = "number_asisi_breaks"
         NORMALISED_NUMBER_ASISI_BREAKS = "normalised_number_asisi_breaks"
+        SAMBPLE_ID = "sample_id"

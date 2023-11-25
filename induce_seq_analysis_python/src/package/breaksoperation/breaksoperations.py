@@ -60,8 +60,21 @@ class BreaksOperator:
             BreaksOperator.__intersect_breaks_with_asisi(self, path_to_filtered_file))
         normalised_asisi_sum_df: pd.DataFrame = BreaksOperator.__sum_normalise_counts_asisi_breaks(
             self, breaks_file_asisi_sites_intersect_df)
+
+        normalised_asisi_sum_sample_id_df: pd.DataFrame = BreaksOperator.__assign_sample_id(
+            self, normalised_asisi_sum_df, sample_identifier)
+
         file_writer_normalised_sum: FileWriter = FileWriter(path_to_normalised_number_asisi_breaks_file, "w")
-        file_writer_normalised_sum.write_df(normalised_asisi_sum_df, Delimiters.TAB_SEPERATOR, True)
+        file_writer_normalised_sum.write_df(normalised_asisi_sum_sample_id_df, Delimiters.TAB_SEPERATOR, True)
+
+    def __assign_sample_id(self, asisi_breaks_df: pd.DataFrame, sample_id: str) -> pd.DataFrame:
+        """ assign sample ids to asisi breaks dataframe """
+
+        sample_id_df = pd.DataFrame({Words.BreaksAsisiColumNames.SAMBPLE_ID: [sample_id]})
+
+        return pd.concat([sample_id_df, asisi_breaks_df], axis=1)
+
+
 
     def __intersect_breaks_with_asisi(self, breaks_bed_file: str) -> pd.DataFrame:
         """ intersect breaks bed file with asisi bed file """
