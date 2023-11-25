@@ -42,20 +42,14 @@ def main() -> None:
     path2output_dir = args_cli_values.path2out
     path2breaks_files = args_cli_values.path2breaks
     path2asisi = args_cli_values.path2asisi
-    # bed_file_extension = args_cli_values.bed_extension
     mapping_score = args_cli_values.score_threshold
+    sample_identifier = args_cli_values.sample_id
 
     try:
 
         breaks_operator: BreaksOperator = BreaksOperator(path2breaks_files, path2asisi, path2output_dir, mapping_score)
-        breaks_operator.process_breaks()
+        breaks_operator.process_breaks(sample_identifier)
 
-        # all_breaks_files: list = globally_get_all_files(path2breaks_files, bed_file_extension)
-        # bed_file: str = get_first_element(globally_get_all_files(path2bed, bed_file_extension))
-
-        # bam_operator: BamOperator = BamOperator(all_bam_files, bed_file, path2output_dir)
-        #
-        # bam_operator.process_bam_files()
 
     except (ValueError, TypeError, FileNotFoundError) as e:
 

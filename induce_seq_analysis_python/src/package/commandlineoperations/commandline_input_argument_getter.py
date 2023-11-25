@@ -41,6 +41,7 @@ class CliInputArgumentGetter:
         parser.add_argument("-a", "--path2asisi", help="absolute file path to AsiSI sites bed file ", required=True, )
         parser.add_argument("-b", "--bed_extension", help="bed file extension", default="bed")
         parser.add_argument("-q", "--score_threshold", help="mapping quality score threshold", type=int, default=30)
+        parser.add_argument("-s", "--sample_id", help="sample identifier", type=str, required=True)
 
         return parser.parse_args(args)
 

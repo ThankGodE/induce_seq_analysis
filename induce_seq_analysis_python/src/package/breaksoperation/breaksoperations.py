@@ -42,10 +42,9 @@ class BreaksOperator:
         self.output_directory = output_directory
         self.score_threshold = score_threshold
 
-    def process_breaks(self) -> None:
+    def process_breaks(self, sample_identifier) -> None:
         """ process breaks bed file """
 
-        sample_identifier: str = get_first_element(os.path.basename(self.breaks_file).split(Delimiters.FULL_STOP))
         filter_file_basename = sample_identifier + "_filtered_reads.bed"
         normalised_asisi_breaks_basename = sample_identifier + "_normalised_asisi_breaks.bed"
 
