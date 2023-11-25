@@ -5,9 +5,8 @@ A collection of functions that performs file writing operations.
 __name__ = "__main__"
 
 import logging
-import os
+import pandas as pd
 
-import vaex as vaex
 
 from package.enumsoperations.delimiter_enums import Delimiters
 
@@ -53,7 +52,7 @@ class FileWriter:
 
         logging.info("writing data to {}".format(self.file_path))
 
-    def write_df(self, data: vaex.dataframe, delimiter: str, header: bool) -> None:
+    def write_df(self, data: pd.DataFrame, delimiter: str, header: bool) -> None:
         """
         Writes data to a file. Data here is a DataFrame. To show progress bar add progress=True to data.export()
 

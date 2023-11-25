@@ -19,7 +19,7 @@ process PROCESS_INDUCE_SEQ() {
 
     shell:
     """
-    python3 $params.absolute_path_project_root_dir/induce_seq_analysis_python/src/main/process_induce_seq.py \
+    $params.absolute_path_project_root_dir/induce_seq_analysis_bash/process_induce_seq.sh \
     -o $params.output_directory -i $params.path_to_breaks_bed_files/$breaks_bed_file -a $params.path_to_asisi_bed_file \
     -s $sample_id
     """
@@ -41,7 +41,7 @@ process COMBINE_ASISI_BREAKS() {
       | sort -u -V | grep number_asisi_breaks > $params.output_directory/merged_normalised_asisi_breaks_matrix.csv
 
    find $params.output_directory/ -type f -name '*normalised_asisi_breaks.bed' -exec cat {} + \
-   | grep -v number_asisi_breaks >> $params.output_directory/merged_normalised_asisi_breaks_matrix.csv
+   | grep -v number_asisi_breaks >> $params.output_directory/merged_normalised_asisi_breaks_matrix.tsv
     """
 }
 
@@ -56,7 +56,7 @@ process ANALYSE_ASISI_BREAKS() {
 
     shell:
     """
-    python3 $params.absolute_path_project_root_dir/induce_seq_analysis_python/src/main/data_analysis_plotting_induce_seq.py \
+    $params.absolute_path_project_root_dir/induce_seq_analysis_bash/data_analysis_plotting_induce_seq.sh \
     -o $params.output_directory -i $merged_normalised_asisi_breaks_matrix
     """
 

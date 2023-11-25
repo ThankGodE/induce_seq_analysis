@@ -50,7 +50,6 @@ def main() -> None:
         breaks_operator: BreaksOperator = BreaksOperator(path2breaks_files, path2asisi, path2output_dir, mapping_score)
         breaks_operator.process_breaks(sample_identifier)
 
-
     except (ValueError, TypeError, FileNotFoundError) as e:
 
         if isinstance(e, ValueError):

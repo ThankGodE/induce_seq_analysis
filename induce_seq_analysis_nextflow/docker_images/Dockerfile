@@ -7,7 +7,7 @@ MAINTAINER "ThankGod Ebenezer"
 
 WORKDIR /work_directory/
 
-COPY /home/tee25/Desktop/assessment/brokenstring/induce_seq_analysis/induce_seq_analysis_python/requirements.txt /work_directory/
+COPY induce_seq_analysis_python/requirements.txt /work_directory/
 
 # Install base utilities
 RUN apt update && \
@@ -25,7 +25,9 @@ RUN apt update && \
 RUN python3 -m venv venv && \
    . venv/bin/activate && \
    pip install --upgrade pip && \
-   pip install -r requirements.txt
+   pip install -r requirements.txt \
+
+
 
 
 
