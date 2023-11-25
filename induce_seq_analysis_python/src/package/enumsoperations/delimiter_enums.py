@@ -10,3 +10,4 @@ class Delimiters:
     HYPHEN = "-"
     FASTA_IDENTIFIER = ">"
     NEW_LINER = "\n"
+    FULL_STOP = "."

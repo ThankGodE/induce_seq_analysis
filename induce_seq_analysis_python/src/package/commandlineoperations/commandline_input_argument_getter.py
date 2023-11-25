@@ -19,7 +19,7 @@ class CliInputArgumentGetter:
     def get_cli_input_arguments(cls, args=None) -> argparse.Namespace:
         """gets input arguments from the commandline interface """
 
-        parser = argparse.ArgumentParser(prog="analyse_induce_seq.py", usage="""analyse_induce_seq.py -h""",
+        parser = argparse.ArgumentParser(prog="process_induce_seq.py", usage="""process_induce_seq.py -h""",
                                          formatter_class=argparse.ArgumentDefaultsHelpFormatter, description=("""
                     This script:
                         1. Filter out reads that have a mapping quality of < 30

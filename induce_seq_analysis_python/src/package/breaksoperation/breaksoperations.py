@@ -7,6 +7,7 @@ import sys
 
 import pandas as pd
 
+from package.datastructureoperations.listoperations.listhandlers import get_first_element
 from package.enumsoperations.character_enums import Words
 from package.enumsoperations.delimiter_enums import Delimiters
 from package.enumsoperations.numerical_enums import Positions
@@ -44,9 +45,13 @@ class BreaksOperator:
     def process_breaks(self) -> None:
         """ process breaks bed file """
 
-        path_to_filtered_file: str = os.path.join(self.output_directory, "filtered_reads.bed")
+        sample_identifier: str = get_first_element(os.path.basename(self.breaks_file).split(Delimiters.FULL_STOP))
+        filter_file_basename = sample_identifier + "_filtered_reads.bed"
+        normalised_asisi_breaks_basename = sample_identifier + "_normalised_asisi_breaks.bed"
+
+        path_to_filtered_file: str = os.path.join(self.output_directory, filter_file_basename)
         path_to_normalised_number_asisi_breaks_file: str = os.path.join(self.output_directory,
-                                                                        "normalised_number_asisi_breaks.bed")
+                                                                        normalised_asisi_breaks_basename)
 
         filtered_reads: object() = BreaksOperator.__filter_reads_from_breaks_file(self)
         file_writer: FileWriter = FileWriter(path_to_filtered_file, "w")
