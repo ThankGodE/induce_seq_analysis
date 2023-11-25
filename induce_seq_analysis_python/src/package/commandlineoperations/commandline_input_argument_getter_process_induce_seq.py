@@ -7,8 +7,6 @@ __name__ = "__main__"
 import argparse
 import os
 
-import pysam as pysam
-
 from package.fileoperations.filehandlers import globally_get_all_files, read_csv
 
 

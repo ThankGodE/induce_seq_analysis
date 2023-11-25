@@ -33,7 +33,7 @@ process COMBINE_ASISI_BREAKS() {
     val process_induce_completed
 
     output:
-    val "combining_asisi_breaks_completed"
+    val "$params.output_directory/merged_normalised_asisi_breaks_matrix.csv"
 
     shell:
     """
@@ -45,13 +45,30 @@ process COMBINE_ASISI_BREAKS() {
     """
 }
 
+process ANALYSE_ASISI_BREAKS() {
+
+    publishDir params.output_directory, mode:'copy'
+    input:
+    val merged_normalised_asisi_breaks_matrix
+
+    output:
+    val"analyse_asisi_completed"
+
+    shell:
+    """
+    python3 $params.absolute_path_project_root_dir/induce_seq_analysis_python/src/main/data_analysis_plotting_induce_seq.py \
+    -o $params.output_directory -i $merged_normalised_asisi_breaks_matrix
+    """
+
+}
+
 
 
 workflow() {
 
     process_asisi_breaks_ch = PROCESS_INDUCE_SEQ(breaks_bed_files_ch)
     combine_asisi_breaks_ch = COMBINE_ASISI_BREAKS(process_asisi_breaks_ch.collect())
-//     analyse_asisi_breaks_ch = ANALYSE_ASISI_BREAKS(process_asisi_breaks_ch.collect())
+    analyse_asisi_breaks_ch = ANALYSE_ASISI_BREAKS(combine_asisi_breaks_ch)
 
 }
 

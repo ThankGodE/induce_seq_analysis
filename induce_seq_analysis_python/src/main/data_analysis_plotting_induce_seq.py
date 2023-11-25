@@ -1,10 +1,6 @@
 """
 This script:
-    1. Filter out reads that have a mapping quality of < 30
-    2. Intersect each sample break bed file with the AsiSI site bed file
-    3. Sum and normalise the counts
-    4. Collect normalised number of AsiSI breaks
-    5. Plot the results: determine which samples are most likely to represent the control and treated subsets.
+    Takes the pipeline output of process_induce_seq.py and plots a line graph f asisi breaks
 
 Required:
     - Python >= 3.10
@@ -19,11 +15,10 @@ from addscriptdir2path import add_package2env_var
 # and libraries in environment variable
 add_package2env_var()
 
+from package.commandlineoperations.commandline_input_argument_getter_analyse_induce_seq import CliInputArgumentGetter
+from package.plottingoperations.plottingoperations import PlottingOperator
 
 from package.profiling.profiling import begin_profiling, end_profiling, ProfileLogger
-from package.breaksoperation.breaksoperations import BreaksOperator
-from package.commandlineoperations.commandline_input_argument_getter_process_induce_seq import CliInputArgumentGetter
-
 
 profiling_starting = begin_profiling("")
 
@@ -40,16 +35,12 @@ def main() -> None:
     CliInputArgumentGetter.check_input_arguments(args_cli_values)
 
     path2output_dir = args_cli_values.path2out
-    path2breaks_files = args_cli_values.path2breaks
-    path2asisi = args_cli_values.path2asisi
-    mapping_score = args_cli_values.score_threshold
-    sample_identifier = args_cli_values.sample_id
+    path2asisimatrix = args_cli_values.path2matrix
 
     try:
 
-        breaks_operator: BreaksOperator = BreaksOperator(path2breaks_files, path2asisi, path2output_dir, mapping_score)
-        breaks_operator.process_breaks(sample_identifier)
-
+        plotting_operation: PlottingOperator = PlottingOperator(path2asisimatrix, path2output_dir)
+        plotting_operation.plot_matrix()
 
     except (ValueError, TypeError, FileNotFoundError) as e:
 
