@@ -1,2 +1,4 @@
 .idea/
-
+induce_seq_analysis_python/src/package/**/*.pyc
+induce_seq_analysis_python/src/**/__pycache__/*.pyc
+induce_seq_analysis_python/src/package/fileoperations/__pycache__/filehandlers.cpython-310.pyc

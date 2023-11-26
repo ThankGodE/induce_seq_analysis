@@ -46,3 +46,26 @@ If the absolute path for the input and output directories changes, please edit t
 ```
 nextflow run induce_seq_analysis_nextflow/analyse_induce_seq.nf -c induce_seq_analysis_nextflow/analyse_induce_seq.config -with-singularity
 ```
+
+### Check outputs
+
+The plot, filtered breaks, and filtered asisi breaks will be located in ```resources/example_data/output/*png```:
+
+To get the plot, please do:
+
+```
+ls -l resources/example_data/output/*png
+```
+
+To get the filtered breaks, please do:
+
+```
+ls -l resources/example_data/output/*filtered_reads.bed
+```
+
+To get the normalised asisi breaks
+
+```
+ls -l resources/example_data/output/*normalised_asisi_breaks.bed
+```
+
