@@ -49,7 +49,7 @@ nextflow run induce_seq_analysis_nextflow/analyse_induce_seq.nf -c induce_seq_an
 
 ### Check outputs
 
-The plot, filtered breaks, and filtered asisi breaks will be located in ```resources/example_data/output/*png```:
+The plot, filtered breaks, and filtered asisi breaks will be located in ```resources/example_data/output/```:
 
 To get the plot, please do:
 
@@ -66,6 +66,6 @@ ls -l resources/example_data/output/*filtered_reads.bed
 To get the normalised asisi breaks
 
 ```
-ls -l resources/example_data/output/*normalised_asisi_breaks.bed
+ls -l resources/example_data/output/*normalised_asisi_breaks.tsv
 ```
 
