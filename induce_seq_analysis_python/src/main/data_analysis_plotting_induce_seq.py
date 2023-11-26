@@ -1,6 +1,6 @@
 """
 This script:
-    Takes the pipeline output of process_induce_seq.py and plots a line graph f asisi breaks
+    Takes the pipeline output of process_induce_seq.py and plots a line graph of asisi breaks
 
 Required:
     - Python >= 3.10
