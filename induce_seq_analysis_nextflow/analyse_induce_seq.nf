@@ -37,10 +37,10 @@ process COMBINE_ASISI_BREAKS() {
 
     shell:
     """
-    find $params.output_directory/ -type f -name '*normalised_asisi_breaks.bed' -exec cat {} + \
+    find $params.output_directory/ -type f -name '*normalised_asisi_breaks.tsv' -exec cat {} + \
       | sort -u -V | grep number_asisi_breaks > $params.output_directory/merged_normalised_asisi_breaks_matrix.tsv
 
-   find $params.output_directory/ -type f -name '*normalised_asisi_breaks.bed' -exec cat {} + \
+   find $params.output_directory/ -type f -name '*normalised_asisi_breaks.tsv' -exec cat {} + \
    | grep -v number_asisi_breaks >> $params.output_directory/merged_normalised_asisi_breaks_matrix.tsv
     """
 }

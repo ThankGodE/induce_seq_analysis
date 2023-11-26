@@ -43,7 +43,7 @@ class BreaksOperator:
         """ process breaks bed file """
 
         filter_file_basename = sample_identifier + "_filtered_reads.bed"
-        normalised_asisi_breaks_basename = sample_identifier + "_normalised_asisi_breaks.bed"
+        normalised_asisi_breaks_basename = sample_identifier + "_normalised_asisi_breaks.tsv"
 
         path_to_filtered_file: str = os.path.join(self.output_directory, filter_file_basename)
         path_to_normalised_number_asisi_breaks_file: str = os.path.join(self.output_directory,
