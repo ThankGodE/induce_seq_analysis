@@ -33,12 +33,12 @@ process COMBINE_ASISI_BREAKS() {
     val process_induce_completed
 
     output:
-    val "$params.output_directory/merged_normalised_asisi_breaks_matrix.csv"
+    val "$params.output_directory/merged_normalised_asisi_breaks_matrix.tsv"
 
     shell:
     """
     find $params.output_directory/ -type f -name '*normalised_asisi_breaks.bed' -exec cat {} + \
-      | sort -u -V | grep number_asisi_breaks > $params.output_directory/merged_normalised_asisi_breaks_matrix.csv
+      | sort -u -V | grep number_asisi_breaks > $params.output_directory/merged_normalised_asisi_breaks_matrix.tsv
 
    find $params.output_directory/ -type f -name '*normalised_asisi_breaks.bed' -exec cat {} + \
    | grep -v number_asisi_breaks >> $params.output_directory/merged_normalised_asisi_breaks_matrix.tsv
