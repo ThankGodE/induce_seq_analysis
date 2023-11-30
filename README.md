@@ -92,4 +92,4 @@ The answers to the questions are based on the interpretation of the PNG file her
 
    #### TGE response: Maximum % observed in a single sample is 0.48 % in Sample 11
 
- 
+![normalised_number_of_asis_breaks.png](normalised_number_of_asis_breaks.png)
