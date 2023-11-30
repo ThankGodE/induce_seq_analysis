@@ -31,7 +31,7 @@ cd induce_seq_analysis
 pwd
 ```
 
-## 2. edit only one line in the NextFlow ```analyse_induce_seq.config``` file by replacing the path variable string of ```env.PROJECT_CODE_BASE_SRC_DIR``` with the absolute path ```(i.e. the output of pwd)``` of pwd from above
+## 2. Edit only one line in the NextFlow ```analyse_induce_seq.config``` file by replacing the path variable string of ```env.PROJECT_CODE_BASE_SRC_DIR``` with the absolute path ```(i.e. the output of pwd)``` of pwd from above
 
 ```
 vim induce_seq_analysis_nextflow/analyse_induce_seq.config
@@ -69,3 +69,27 @@ To get the normalised asisi breaks
 ls -l resources/example_data/output/*normalised_asisi_breaks.tsv
 ```
 
+# Answers to the questions: 
+
+The answers to the questions are based on the interpretation of the PNG file here: `ls -l resources/example_data/output/*png`
+
+1. Which of the samples are likely to be controls or treated?
+
+    #### TGE response: Controls are Sample IDs 4, 2, 1, 5, 6, 8, and 7
+
+
+2. Are there any you are uncertain of?
+
+   #### TGE response: Sample ID 3 is uncertain
+
+
+3. Can you explain the samples in the uncertain group?
+
+    #### TGE response: Majority of the samples in the uncertain group have MAPQ < 30. Only one have MAPQ > 30 and this seems to disappear with normalisation
+
+
+4. Of all the possible AsiSI sites described in the chr21_AsiSI_sites.t2t.bed file what is the maximum percentage observed in a single sample?
+
+   #### TGE response: Maximum % observed in a single sample is 0.48 % in Sample 11
+
+ 
